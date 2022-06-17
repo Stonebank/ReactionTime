@@ -44,7 +44,7 @@ public class ReactionTime extends JFrame implements MouseListener {
         button.setText("Wait for green...");
         button.setBackground(Color.RED);
         button.setEnabled(false);
-        reactionStart = generateSeconds(10, 5);
+        reactionStart = generateSeconds(11, 6);
         resultStart = 0;
         resultFinish = 0;
         checkTime();
