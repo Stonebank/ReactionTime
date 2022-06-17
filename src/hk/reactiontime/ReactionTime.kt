@@ -75,7 +75,7 @@ class ReactionTime : JFrame(), MouseListener {
             return
         }
         resultFinish = System.currentTimeMillis() - resultStart
-        button.text = "$resultFinish ms (click to restart"
+        button.text = "$resultFinish ms (click to restart)"
     }
 
     override fun mousePressed(e: MouseEvent?) {
