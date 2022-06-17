@@ -12,7 +12,7 @@ import javax.swing.JFrame
 
 class ReactionTime : JFrame(), MouseListener {
 
-    private val button = JButton("Wait for green...")
+    private val button = JButton("Click anywhere to start")
 
     private var reactionStart: Int = 0
 
@@ -22,10 +22,10 @@ class ReactionTime : JFrame(), MouseListener {
     init {
 
         this.button.font = Font("Times New Roman", Font.BOLD, 36)
-        this.button.background = Color.RED
+        this.button.background = Color.BLACK
+        this.button.foreground = Color.WHITE
         this.button.isOpaque = true
         this.button.isBorderPainted = false
-        this.button.isEnabled = false
         this.button.addMouseListener(this)
 
         this.title = "Reaction time by Hassan K"
@@ -34,10 +34,6 @@ class ReactionTime : JFrame(), MouseListener {
         this.defaultCloseOperation = EXIT_ON_CLOSE
         this.isVisible = true
         this.pack()
-
-        this.reactionStart = (5..10).random()
-
-        this.checkTime()
 
     }
 
@@ -72,6 +68,14 @@ class ReactionTime : JFrame(), MouseListener {
             return
         if (resultFinish > 0) {
             restart()
+            return
+        }
+        if (reactionStart == 0) {
+            reactionStart = (5..10).random()
+            button.text = "Wait for green..."
+            button.background = Color.RED
+            button.isEnabled = false
+            checkTime()
             return
         }
         resultFinish = System.currentTimeMillis() - resultStart
