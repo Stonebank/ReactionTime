@@ -4,13 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class ReactionTime extends JFrame implements MouseListener {
-
-    /*
-    * TODO: Fix the 'restart' function
-     */
 
     private final JButton button;
 
@@ -18,8 +16,6 @@ public class ReactionTime extends JFrame implements MouseListener {
 
     private long resultStart;
     private long resultFinish;
-
-    private boolean hasChangedColor;
 
     public ReactionTime() {
 
@@ -31,14 +27,14 @@ public class ReactionTime extends JFrame implements MouseListener {
         this.button.addMouseListener(this);
         this.button.setEnabled(false);
 
-        this.add(button);
         this.setTitle("Reaction time test by Hassan K");
+        this.add(button);
         this.setPreferredSize(new Dimension(800, 600));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
         this.pack();
 
-        this.reactionStart = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(generateSeconds(10, 5));
+        this.reactionStart = generateSeconds(10, 5);
 
         this.checkTime();
 
@@ -48,23 +44,25 @@ public class ReactionTime extends JFrame implements MouseListener {
         button.setText("Wait for green...");
         button.setBackground(Color.RED);
         button.setEnabled(false);
-        reactionStart = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(generateSeconds(10, 5));
-        hasChangedColor = false;
+        reactionStart = generateSeconds(10, 5);
         resultStart = 0;
         resultFinish = 0;
         checkTime();
     }
 
     private void checkTime() {
-        while (!hasChangedColor) {
-            if (System.currentTimeMillis() > reactionStart) {
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
                 resultStart = System.currentTimeMillis();
                 button.setEnabled(true);
-                hasChangedColor = true;
                 button.setText("Click!");
                 button.setBackground(Color.GREEN);
+                timer.cancel();
             }
-        }
+        };
+        timer.scheduleAtFixedRate(timerTask, TimeUnit.SECONDS.toMillis(reactionStart), 1);
     }
 
     private int generateSeconds(int max, int min) {
